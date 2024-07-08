@@ -1,0 +1,98 @@
+
+<div style="padding: 5%;">
+    <form [formGroup]="filterForm">
+      <div class="flex p-10">
+      <section class="example-section">
+        <ul>
+          @for (status of Object.values(Status); track i; let i = $index) {
+            <li>
+               <mat-checkbox  [formControlName]="status">
+                {{status | camelCaseToCapitalized}}
+              </mat-checkbox>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <mat-form-field>
+        <mat-label>Product Line</mat-label>
+        <mat-select formControlName="productLine">
+          @for (productLine of productLines; track $index) {
+            <mat-option  [value]="productLine">{{productLine}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Date From" formControlName="dateFrom">
+          <input matEndDate placeholder="Date to" formControlName="dateTo">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Order Number</mat-label>
+        <input matInput formControlName="orderNumber">
+      </mat-form-field>
+        <button class="m-5" mat-raised-button color="primary" (click)="filterForm.reset()">Clear filter</button>
+      </div>
+    </form>
+
+  <mat-divider></mat-divider>
+    <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        Status
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.status}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="orderNumber">
+      <th  mat-header-cell *matHeaderCellDef mat-sort-header>Order Numer</th>
+      <td mat-cell *matCellDef="let element">{{element.orderNumber}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="productLine" >
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="hidden lg:block"> Product Line</th>
+      <td mat-cell *matCellDef="let element" class="hidden lg:block">{{element.productLine}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th  mat-header-cell *matHeaderCellDef mat-sort-header> Product</th>
+      <td mat-cell *matCellDef="let element">{{element.product}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="hidden lg:block"> Quantity</th>
+      <td mat-cell *matCellDef="let element" class="hidden lg:block">
+          {{element.quantity}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateRequested">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="hidden lg:block"> Date Requested</th>
+      <td mat-cell *matCellDef="let element" class="hidden lg:block">
+        {{element.dateRequested}}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onViewProduct(row.orderNumber)"></tr>
+  </table>
+    <mat-paginator  [pageSizeOptions]="pageSize"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements">
+    </mat-paginator>
+  @if(dataSouceCount <= 0) {
+    <div class="no-data-filter">
+      <h2>Nothing to display</h2>
+      <h3>Please, adjust filter to see more results. </h3>
+    </div>
+
+  }
+  </div>

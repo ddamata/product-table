@@ -1,0 +1,49 @@
+'<mat-dialog-content class="dialog" >
+  <p>{{data.title}}</p>
+  <form [formGroup]="form" class="">
+    <mat-grid-list [cols]="columnNumber" rowHeight="80px" (window:resize)="onResize($event)">
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Status</mat-label>
+          <input matInput [readonly]="!data.editMode" formControlName="status">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+        <mat-label>Order Number</mat-label>
+        <input matInput [readonly]="!data.editMode" formControlName="orderNumber">
+      </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Product</mat-label>
+          <input  [readonly]="!data.editMode" matInput formControlName="product">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Product Line</mat-label>
+          <input  [readonly]="!data.editMode" matInput formControlName="productLine">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>quantity</mat-label>
+          <input  [readonly]="!data.editMode" matInput formControlName="quantity">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field>
+          <mat-label>Date Requested </mat-label>
+          <input matInput [readonly]="!data.editMode" formControlName="dateRequested">
+        </mat-form-field>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Close</button>
+  @if(data.editMode) {
+  <button mat-button [disabled]="!form.valid" [mat-dialog-close]="form.value" cdkFocusInitial>Ok</button>
+}
+</mat-dialog-actions>
